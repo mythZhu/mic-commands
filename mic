@@ -1,0 +1,47 @@
+#!/usr/bin/python -tt
+
+import sys
+
+from basecommand import Command, Argument
+from commands import commands
+
+class MicCommand(Command):
+    """ Mic main command.
+    """
+    name = 'mic'
+    usage = '%(prog)s <SUBCOMMAND> [OPTS] [ARGS...]'
+    description = 'mic Means the Image Creation tool'
+
+    arguments = [
+        Argument(
+            '-v', '--verbose',
+            dest='verbose',
+            action='store_true',
+            help='verbose information',
+        ),
+        Argument(
+            '-d', '--debug',
+            dest='debug',
+            action='store_true',
+            help='print debug message',
+        ),
+        Argument(
+            '--version',
+            action='version',
+            version='%(prog)s 0.1',
+        ),
+    ]
+
+    subcommands = commands
+
+    def run(self, cmd_args):
+        print >> sys.stdout, 'run MIC with the following args:'
+        print >> sys.stdout, cmd_args
+
+if __name__ == '__main__':
+    try:
+        cmd = MicCommand(name=__file__)
+        sys.exit(cmd.main())
+    except KeyboardInterrupt:
+        sys.stderr.write('^C catched, program aborted.\n')
+        sys.exit(1)
